@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "apiVersion": "2021-03-01",
+            "name": "PABOct1007-0/ScriptsTest1",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "displayName": "ScriptsTest1"
+            },
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.10",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "commandToExecute": "powershell.exe -ExecutionPolicy ByPass -File ConfigureSSL.ps1 &
+                     powershell.exe -ExecutionPolicy Bypass -File EncryptSPFConnectionStrings.ps1 & 
+                    powershell.exe -ExecutionPolicy Bypass -File ReconfigureSAM.ps1 &
+                     powershell.exe -ExecutionPolicy Bypass -File ReconfigureSDxVM.ps1 & 
+                     powershell.exe -ExecutionPolicy Bypass -File RabbitMQConfig.ps1 "
+                },
+                "protectedSettings": {
+                    "storageAccountName": "pabtraininghkstorage",
+                    "storageAccountKey": "HFh6gEwlV7MFIf/QYRGWitakUAzSh8mJBsTegK2CbJ0B0VE5Mhmt5C37ae9LKfzSUjRU7Qkb2kBBgZ+HrtDQuw==",
+                    "fileUris": [
+                        "https://pabtraininghkstorage.blob.core.windows.net/vmscripts/ConfigureSSL.ps1",
+                        "https://pabtraininghkstorage.blob.core.windows.net/vmscripts/EncryptSPFConnectionStrings.ps1",
+                        "https://pabtraininghkstorage.blob.core.windows.net/vmscripts/ReconfigureSAM.ps1",
+                        "https://pabtraininghkstorage.blob.core.windows.net/vmscripts/ReconfigureSDxVM.ps1",
+                        "https://pabtraininghkstorage.blob.core.windows.net/vmscripts/RabbitMQConfig.ps1"
+                    ]
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}
